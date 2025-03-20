@@ -42,3 +42,4 @@ Storage: JSON
 
     ./todoClient delete TASK_NUMBER
 
+### For more details, consult the /docs directory
