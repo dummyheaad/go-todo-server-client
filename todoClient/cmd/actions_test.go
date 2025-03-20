@@ -22,6 +22,7 @@ func TestListAction(t *testing.T) {
 			Body   string
 		}
 		closeServer bool
+		active      bool
 	}{
 		{
 			name:     "Results",
@@ -33,6 +34,13 @@ func TestListAction(t *testing.T) {
 			name:     "NoResults",
 			expError: ErrNotFound,
 			resp:     testResp["noResults"],
+		},
+		{
+			name:     "OnlyCompletedResults",
+			expError: nil,
+			expOut:   "-  1  Task 1\n-  2  Task 2\n",
+			resp:     testResp["resultsMany"],
+			active:   true,
 		},
 		{
 			name:        "InvalidURL",
@@ -57,7 +65,7 @@ func TestListAction(t *testing.T) {
 
 			var out bytes.Buffer
 
-			err := listAction(&out, url)
+			err := listAction(&out, url, tc.active)
 
 			if tc.expError != nil {
 				if err == nil {

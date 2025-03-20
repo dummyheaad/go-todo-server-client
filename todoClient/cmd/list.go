@@ -23,28 +23,41 @@ var listCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		apiRoot := viper.GetString("api-root")
 
-		return listAction(os.Stdout, apiRoot)
+		active, err := cmd.Flags().GetBool("active")
+		if err != nil {
+			return err
+		}
+
+		return listAction(os.Stdout, apiRoot, active)
 	},
 }
 
-func listAction(out io.Writer, apiRoot string) error {
+func listAction(out io.Writer, apiRoot string, active bool) error {
 	items, err := getAll(apiRoot)
 	if err != nil {
 		return err
 	}
 
-	return printAll(out, items)
+	return printAll(out, items, active)
 }
 
-func printAll(out io.Writer, items []item) error {
+func printAll(out io.Writer, items []item, active bool) error {
 	w := tabwriter.NewWriter(out, 3, 2, 0, ' ', 0)
 
 	for k, v := range items {
-		done := "-"
-		if v.Done {
-			done = "X"
+		if active {
+			if v.Done {
+				continue
+			}
+			done := "-"
+			fmt.Fprintf(w, "%s\t%d\t%s\t\n", done, k+1, v.Task)
+		} else {
+			done := "-"
+			if v.Done {
+				done = "X"
+			}
+			fmt.Fprintf(w, "%s\t%d\t%s\t\n", done, k+1, v.Task)
 		}
-		fmt.Fprintf(w, "%s\t%d\t%s\t\n", done, k+1, v.Task)
 	}
 	return w.Flush()
 }
@@ -54,6 +67,7 @@ func init() {
 
 	// Here you will define your flags and configuration settings.
 
+	listCmd.Flags().Bool("active", false, "filter only active tasks")
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
