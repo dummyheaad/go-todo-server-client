@@ -19,7 +19,7 @@ import (
 // viewCmd represents the view command
 var viewCmd = &cobra.Command{
 	Use:          "view <id>",
-	Short:        "A brief description of your command",
+	Short:        "View details of a single task",
 	SilenceUsage: true,
 	Args:         cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {

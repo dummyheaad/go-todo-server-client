@@ -18,7 +18,7 @@ import (
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:          "add <task>",
-	Short:        "A brief description of your command",
+	Short:        "Add a new task to the list",
 	SilenceUsage: true,
 	Args:         cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
