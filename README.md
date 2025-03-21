@@ -42,4 +42,60 @@ Storage: JSON
 
     ./todoClient delete TASK_NUMBER
 
-### For more details, consult the /docs directory
+### Generate markdown documentation
+
+    ./todoClient docs --dir PATH
+
+### Generate bash auto-completion
+
+    script <(./todoClient completion)
+
+### For more details, consult the /todoClient/docs directory
+
+## Examples
+### Run the server (todo will be saved at /tmp/testtodoclient01.json)
+
+    ./todoServer -f /tmp/testtodoclient01.json
+
+### Add new task
+
+    ./todoClient add my new task
+    ./todoClient add my new task 1
+
+### List task
+
+    ./todoClient list
+    Output:
+    - 1 my new task
+    - 2 my new task 1
+
+### Complete the 1st task
+
+    ./todoClient complete 1
+    Output:
+    Item number 1 marked as completed.
+
+### List task
+
+    ./todoClient list
+    Output:
+    x 1 my new task
+    - 2 my new task 1
+
+### List all active task (not completed)
+
+    ./todoClient list --active
+    Output:
+    - 2 my new task 1
+
+### Delete a single task
+    
+    ./todoClient del 1
+    Output:
+    Item number 1 deleted.
+
+### List task
+
+    ./todoClient list
+    Output:
+    - 1 my new task 1
